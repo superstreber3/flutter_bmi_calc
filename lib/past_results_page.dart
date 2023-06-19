@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:fl_chart/fl_chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -69,31 +69,11 @@ class _PastResultsPageState extends State<PastResultsPage> {
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                 ),
-                child: charts.TimeSeriesChart(
+                child: LineChart(
                   _createSampleData(),
-                  animate: true,
-                  primaryMeasureAxis: charts.NumericAxisSpec(
-                    renderSpec: charts.GridlineRendererSpec(
-                      labelStyle: charts.TextStyleSpec(
-                        fontSize: 12,
-                        color: charts.MaterialPalette.white,
-                      ),
-                      lineStyle: charts.LineStyleSpec(
-                        color: charts.MaterialPalette.white,
-                      ),
-                    ),
-                  ),
-                  domainAxis: charts.DateTimeAxisSpec(
-                    renderSpec: charts.GridlineRendererSpec(
-                      labelStyle: charts.TextStyleSpec(
-                        fontSize: 12,
-                        color: charts.MaterialPalette.white,
-                      ),
-                      lineStyle: charts.LineStyleSpec(
-                        color: charts.MaterialPalette.white,
-                      ),
-                    ),
-                  ),
+                  swapAnimationDuration:
+                      Duration(milliseconds: 150), // Optional
+                  swapAnimationCurve: Curves.linear, // Optional
                 ),
               ),
             ),
@@ -112,7 +92,8 @@ class _PastResultsPageState extends State<PastResultsPage> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: Text('Result ${index + 1}'),
-                    subtitle: Text('BMI: ${bmiResults[index].bmi}'),
+                    subtitle: Text(
+                        'BMI: ${bmiResults[index].bmi.toStringAsFixed(2)}'),
                   );
                 },
               ),
@@ -123,16 +104,61 @@ class _PastResultsPageState extends State<PastResultsPage> {
     );
   }
 
-  List<charts.Series<BMIResult, DateTime>> _createSampleData() {
-    return [
-      charts.Series<BMIResult, DateTime>(
-        id: 'BMI Results',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (BMIResult result, _) => result.timestamp,
-        measureFn: (BMIResult result, _) => result.bmi,
-        data: bmiResults,
+  LineChartData _createSampleData() {
+    return LineChartData(
+      lineTouchData: LineTouchData(enabled: false),
+      lineBarsData: [
+        LineChartBarData(
+          spots: bmiResults
+              .map((result) => FlSpot(
+                  result.timestamp.millisecondsSinceEpoch.toDouble() /
+                      1000000000,
+                  result.bmi))
+              .toList(),
+          isCurved: true,
+          dotData: FlDotData(show: false),
+          belowBarData: BarAreaData(show: false),
+          color: Colors.blue,
+        ),
+      ],
+      minY: 0,
+      titlesData: FlTitlesData(
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 22,
+            getTitlesWidget: (value, meta) {
+              final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(
+                  value.toInt() * 1000000000);
+              return Text(
+                '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}',
+              );
+            },
+          ),
+        ),
+        leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 28,
+          getTitlesWidget: (value, meta) {
+            switch (value.toInt()) {
+              case 10:
+                return Text('10');
+              case 20:
+                return Text('20');
+              case 30:
+                return Text('30');
+              case 40:
+                return Text('40');
+              default:
+                return Text('');
+            }
+          },
+        )),
       ),
-    ];
+      gridData: FlGridData(show: false),
+      borderData: FlBorderData(show: false),
+    );
   }
 }
 
