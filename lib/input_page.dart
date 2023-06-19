@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:helloworld/common_app_bar.dart';
 import 'results_page.dart';
 
 class InputPage extends StatefulWidget {
@@ -17,9 +18,7 @@ class _InputPageState extends State<InputPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('BMI CALCULATOR'),
-      ),
+      appBar: CommonAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -94,6 +93,7 @@ class _InputPageState extends State<InputPage> {
 
   double calculateBMI(int height, int weight, int age) {
     // Modify the formula to use age if needed
-    return weight / ((height / 100) * (height / 100));
+    double bmi = weight / ((height / 100) * (height / 100));
+    return double.parse(bmi.toStringAsFixed(2));
   }
 }

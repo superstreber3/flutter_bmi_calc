@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:helloworld/common_app_bar.dart';
 import 'login_page.dart';
 
 enum BMICategory {
@@ -86,43 +87,7 @@ class ResultsPage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('BMI CALCULATOR RESULTS'),
-        actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: (value) => showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('BMI Categories'),
-                content: ListView(
-                  children: getBMICategories().entries.map((entry) {
-                    return ListTile(
-                      title: Text(entry.key),
-                      subtitle: Text('BMI: ${entry.value}'),
-                    );
-                  }).toList(),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Close'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-            itemBuilder: (BuildContext context) {
-              return {'BMI Categories'}.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
-          ),
-        ],
-      ),
+      appBar: CommonAppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -132,7 +97,7 @@ class ResultsPage extends StatelessWidget {
               style: TextStyle(fontSize: 24),
             ),
             Text(
-              bmi.toStringAsFixed(1),
+              bmi.toString(),
               style: const TextStyle(fontSize: 48),
             ),
             Text(
@@ -158,7 +123,7 @@ class ResultsPage extends StatelessWidget {
                   await bmiDocRef.set({
                     'userId': userId,
                     'bmi': bmi,
-                    'timestamp': DateTime.now().toString(),
+                    'timestamp': FieldValue.serverTimestamp(),
                   });
 
                   // Show a success message to the user
