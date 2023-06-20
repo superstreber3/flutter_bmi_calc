@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:helloworld/common_app_bar.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -65,33 +66,40 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CommonAppBar(),
       body: Container(
+        padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: <Widget>[
-              Container(
-                child: Text(
+          child: Padding(
+            padding: EdgeInsets.all(36.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
                   'Login',
-                  style: TextStyle(fontSize: 20.0),
+                  style: TextStyle(
+                    fontSize: 36.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Container(
-                child: TextFormField(
+                SizedBox(height: 24.0),
+                TextFormField(
                   validator: (input) {
-                    if (input?.isEmpty == null) {
+                    if (input?.isEmpty == true) {
                       return 'Enter Email';
                     }
                     return null;
                   },
                   decoration: InputDecoration(
                     labelText: 'Email',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.email),
                   ),
                   onSaved: (input) => _email = input ?? '',
                 ),
-              ),
-              Container(
-                child: TextFormField(
+                SizedBox(height: 16.0),
+                TextFormField(
                   validator: (input) {
                     if (input == null || input.length < 6) {
                       return 'Provide Minimum 6 Character';
@@ -100,20 +108,37 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   decoration: InputDecoration(
                     labelText: 'Password',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.lock),
                   ),
                   obscureText: true,
                   onSaved: (input) => _password = input ?? '',
                 ),
-              ),
-              ElevatedButton(
-                onPressed: login,
-                child: Text('Sign In'),
-              ),
-              ElevatedButton(
-                onPressed: navigateToSignUpScreen,
-                child: Text('Register'),
-              ),
-            ],
+                SizedBox(height: 24.0),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(200, 50)),
+                    ),
+                    onPressed: login,
+                    child: Text('Sign In'),
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                TextButton(
+                  onPressed: navigateToSignUpScreen,
+                  child: Text(
+                    'Don\'t have an account? Register',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

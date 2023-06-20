@@ -48,8 +48,9 @@ class BMICalculator extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(),
-      home: StartScreen(),
+      initialRoute: '/',
       routes: {
+        '/': (context) => StartScreen(),
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignUpPage(),
       },

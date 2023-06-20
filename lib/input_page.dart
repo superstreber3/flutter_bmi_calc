@@ -20,11 +20,14 @@ class _InputPageState extends State<InputPage> {
     return Scaffold(
       appBar: CommonAppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(36.0),
         child: Column(
           mainAxisAlignment:
               MainAxisAlignment.center, // Zentriert die Elemente in der Column
           children: <Widget>[
+            Text("Data",
+                style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
+            SizedBox(height: 60), // Add a vertical gap
             TextField(
               decoration: const InputDecoration(labelText: "Height (cm)"),
               keyboardType: TextInputType.number,
@@ -65,7 +68,7 @@ class _InputPageState extends State<InputPage> {
                     const Size(200, 50)), // Ändert die Größe des Buttons
               ),
             ),
-            const SizedBox(height: 20), // Fügt einen Raum vor dem Button hinzu
+            const SizedBox(height: 60), // Fügt einen Raum vor dem Button hinzu
             ElevatedButton(
               child: const Text('Calculate BMI'),
               style: ButtonStyle(

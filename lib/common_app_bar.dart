@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:helloworld/login_page.dart';
+import 'package:helloworld/start_screen.dart';
 
 import 'past_results_page.dart'; // Import the PastResultsPage
 
@@ -16,9 +18,20 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
               if (auth.currentUser != null) {
                 auth.signOut();
                 // Handle logout or navigate to the logout screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StartScreen(),
+                  ),
+                );
               }
             } else if (value == 'login') {
-              Navigator.pushNamed(context, '/login');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginPage(),
+                ),
+              );
             } else if (value == 'bmiCategories') {
               showDialog(
                 context: context,
@@ -95,4 +108,9 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       'Obesity Class III': '40.0 and above',
     };
   }
+}
+
+String getCurrentRouteName(BuildContext context) {
+  final route = ModalRoute.of(context);
+  return route?.settings.name ?? '';
 }
