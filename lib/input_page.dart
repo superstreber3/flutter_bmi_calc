@@ -25,7 +25,7 @@ class _InputPageState extends State<InputPage> {
           mainAxisAlignment:
               MainAxisAlignment.center, // Zentriert die Elemente in der Column
           children: <Widget>[
-            Text("Data",
+            Text("Input",
                 style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
             SizedBox(height: 60), // Add a vertical gap
             TextField(
