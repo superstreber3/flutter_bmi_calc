@@ -123,39 +123,42 @@ class _PastResultsPageState extends State<PastResultsPage> {
       ],
       minY: 0,
       titlesData: FlTitlesData(
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 22,
-            getTitlesWidget: (value, meta) {
-              final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(
-                  value.toInt() * 1000000000);
-              return Text(
-                '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}',
-              );
-            },
-          ),
-        ),
-        leftTitles: AxisTitles(
+          bottomTitles: AxisTitles(
             sideTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 28,
-          getTitlesWidget: (value, meta) {
-            switch (value.toInt()) {
-              case 10:
-                return Text('10');
-              case 20:
-                return Text('20');
-              case 30:
-                return Text('30');
-              case 40:
-                return Text('40');
-              default:
-                return Text('');
-            }
-          },
-        )),
-      ),
+              showTitles: false,
+              reservedSize: 22,
+              getTitlesWidget: (value, meta) {
+                final DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(
+                    value.toInt() * 1000000000);
+                return Text(
+                  '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}',
+                );
+              },
+            ),
+          ),
+          leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 28,
+            getTitlesWidget: (value, meta) {
+              switch (value.toInt()) {
+                case 10:
+                  return Text('10');
+                case 20:
+                  return Text('20');
+                case 30:
+                  return Text('30');
+                case 40:
+                  return Text('40');
+                default:
+                  return Text('');
+              }
+            },
+          )),
+          rightTitles: AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false))),
       gridData: FlGridData(show: false),
       borderData: FlBorderData(show: false),
     );
